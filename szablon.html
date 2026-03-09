@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Szablon Faktury</title>
+    <style>
+        /* GŁÓWNE USTAWIENIA STRONY */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 40px; /* Marginesy wewnątrz dokumentu */
+            font-size: 14px;
+            position: relative;
+        }
+
+        /* ZNAK WODNY */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg); /* Wyśrodkowanie i obrót */
+            font-size: 120px;
+            color: rgba(200, 200, 200, 0.15); /* Bardzo jasny szary z przezroczystością */
+            z-index: -1; /* Pod spodem wszystkiego */
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        /* NAGŁÓWEK: Logo i numer faktury */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .logo-placeholder {
+            width: 150px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-weight: bold;
+        }
+
+        .invoice-title {
+            text-align: right;
+        }
+        .invoice-title h1 {
+            margin: 0 0 5px 0;
+            color: #0056b3;
+            font-size: 28px;
+        }
+
+        /* SEKCJA DANYCH: Sprzedawca i Nabywca */
+        .details-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .details-box {
+            width: 45%;
+        }
+        .details-box h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            color: #555;
+        }
+
+        /* TABELA PRODUKTÓW */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        /* Magia dla długich tabel (drukowanie) */
+        thead { display: table-header-group; }
+        tr { page-break-inside: avoid; }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        /* PODSUMOWANIE KWOTY */
+        .summary {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 60px;
+        }
+        .summary-box {
+            width: 300px;
+            border: 2px solid #0056b3;
+            padding: 15px;
+            background-color: #f4f8fc;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .summary-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0056b3;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* PODPISY */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            page-break-inside: avoid; /* Żeby nie ucięło podpisów w połowie */
+        }
+        .signature-line {
+            width: 40%;
+            border-top: 1px solid #333;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 12px;
+            color: #555;
+        }
+        .invoice-box {
+        max-width: 800px; /* Ogranicza szerokość */
+        margin: 0 auto;   /* Środkuje fakturę na ekranie */
+        background: white;
+        }
+        @media print {
+        body {
+            padding: 0; /* Puppeteer sam ogarnie marginesy */
+        }
+        .header {
+            border-bottom: 2px solid black;
+        }
+        .summary-box {
+            border: 2px solid black;
+            background-color: transparent; /* Usuwamy jasne tło, by nie było "brudne" w druku */
+        }
+        .summary-total {
+            color: black;
+        }
+}
+    </style>
+</head>
+<body>
+
+    <div class="watermark">ORYGINAŁ</div>
+
+    <div class="invoice-box">
+
+        <div class="header">
+            <div class="invoice-title" style="text-align: left;">
+                <h1>FAKTURA VAT</h1>
+                <strong>Nr: FS-2026/03/001</strong><br>
+                Data wystawienia: 10.03.2026<br>
+                Data sprzedaży: 10.03.2026
+            </div>
+            <div class="logo-placeholder" style="border-radius: 5px;">
+                [ TU BĘDZIE LOGO ]
+            </div>
+        </div> <div class="details-section">
+            <div class="details-box">
+                <h3>Sprzedawca</h3>
+                <strong>Moja Super Firma Sp. z o.o.</strong><br>
+                ul. Innowacyjna 1, 00-001 Warszawa<br>
+                NIP: 1234567890<br>
+                BDO: 000123456
+            </div>
+            <div class="details-box">
+                <h3>Nabywca</h3>
+                <strong>Jan Kowalski "Kowal-Bud"</strong><br>
+                ul. Remontowa 45, 02-222 Kraków<br>
+                NIP: 9876543210
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 5%;">Lp.</th>
+                    <th style="width: 40%;">Nazwa towaru / usługi</th>
+                    <th class="text-center" style="width: 10%;">Ilość</th>
+                    <th class="text-center" style="width: 10%;">J.m.</th>
+                    <th class="text-right" style="width: 15%;">Cena netto</th>
+                    <th class="text-right" style="width: 20%;">Wartość netto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td>Usługa programistyczna - napisanie skryptu Node.js</td>
+                    <td class="text-center">10</td>
+                    <td class="text-center">godz</td>
+                    <td class="text-right">150,00 zł</td>
+                    <td class="text-right">1 500,00 zł</td>
+                </tr>
+                <tr>
+                    <td class="text-center">2</td>
+                    <td>Konsultacje IT</td>
+                    <td class="text-center">2</td>
+                    <td class="text-center">godz</td>
+                    <td class="text-right">200,00 zł</td>
+                    <td class="text-right">400,00 zł</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="summary">
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Razem netto:</span>
+                    <span>1 900,00 zł</span>
+                </div>
+                <div class="summary-row">
+                    <span>VAT (23%):</span>
+                    <span>437,00 zł</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Do zapłaty:</span>
+                    <span>2 337,00 zł</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="signatures">
+            <div class="signature-line">
+                Imię i nazwisko osoby upoważnionej<br>do odbioru faktury
+            </div>
+            <div class="signature-line">
+                Imię i nazwisko osoby upoważnionej<br>do wystawienia faktury
+            </div>
+        </div>
+
+    </div> </body>
+</html>
