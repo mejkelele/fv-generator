@@ -170,9 +170,9 @@
         <div class="header">
             <div class="invoice-title" style="text-align: left;">
                 <h1>FAKTURA VAT</h1>
-                <strong>Nr: FS-2026/03/001</strong><br>
-                Data wystawienia: 10.03.2026<br>
-                Data sprzedaży: 10.03.2026
+                <strong>{{nr_fv}}</strong><br>
+                Data wystawienia: {{data_wystawienia}}<br>
+                Data sprzedaży: {{data_sprzedazy}}
             </div>
             <div class="logo-placeholder" style="border-radius: 5px;">
                 [ TU BĘDZIE LOGO ]
@@ -180,16 +180,15 @@
         </div> <div class="details-section">
             <div class="details-box">
                 <h3>Sprzedawca</h3>
-                <strong>Moja Super Firma Sp. z o.o.</strong><br>
-                ul. Innowacyjna 1, 00-001 Warszawa<br>
-                NIP: 1234567890<br>
-                BDO: 000123456
+                <strong>{{nazwa_sprzedawcy}}</strong><br>
+                {{ulica_sprzedawcy}} {{nr_domu_sprzedawcy}}, {{postal_sprzedawcy}} {{miasto_sprzedawcy}}<br>
+                NIP: {{nip_sprzedawcy}}<br>
             </div>
             <div class="details-box">
                 <h3>Nabywca</h3>
-                <strong>Jan Kowalski "Kowal-Bud"</strong><br>
-                ul. Remontowa 45, 02-222 Kraków<br>
-                NIP: 9876543210
+                <strong>{{nazwa_nabywcy}}</strong><br>
+                {{ulica_nabywcy}} {{nr_domu_nabywcy}}, {{postal_nabywcy}} {{miasto_nabywcy}}<br>
+                NIP: {{nip_nabywcy}}<br>
             </div>
         </div>
 
@@ -202,25 +201,20 @@
                     <th class="text-center" style="width: 10%;">J.m.</th>
                     <th class="text-right" style="width: 15%;">Cena netto</th>
                     <th class="text-right" style="width: 20%;">Wartość netto</th>
+                    <th class="text-right" style="width: 20%;">Wartość brutto</th>
                 </tr>
             </thead>
             <tbody>
+                {{#each pozycje}}
                 <tr>
-                    <td class="text-center">1</td>
-                    <td>Usługa programistyczna - napisanie skryptu Node.js</td>
-                    <td class="text-center">10</td>
-                    <td class="text-center">godz</td>
-                    <td class="text-right">150,00 zł</td>
-                    <td class="text-right">1 500,00 zł</td>
+                    <td class="text-center">{{lp}}</td>
+                    <td>{{nazwa_produktu}}</td>
+                    <td class="text-center">{{ilosc}}</td>
+                    <td class="text-center">{{jm}}</td>
+                    <td class="text-right">{{netto_sztuka}}</td>
+                    <td class="text-right">{{netto}}</td>
                 </tr>
-                <tr>
-                    <td class="text-center">2</td>
-                    <td>Konsultacje IT</td>
-                    <td class="text-center">2</td>
-                    <td class="text-center">godz</td>
-                    <td class="text-right">200,00 zł</td>
-                    <td class="text-right">400,00 zł</td>
-                </tr>
+                {{/each}}
             </tbody>
         </table>
 
@@ -250,5 +244,7 @@
             </div>
         </div>
 
-    </div> </body>
+    </div> 
+</body>
+
 </html>

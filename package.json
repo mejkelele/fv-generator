@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "handlebars": "^4.7.8",
+    "node-file-dialog": "^1.0.3",
+    "papaparse": "^5.5.3",
     "puppeteer": "^24.38.0"
   }
 }
