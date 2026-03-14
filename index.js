@@ -3,35 +3,35 @@ const fs = require('fs/promises');
 const fileManager = require('./fileManager.js');
 const HandleBars = require('handlebars');
 
-
-
-async function createInvoice(){
-    
-    const daneDoFaktury = {
-        nazwa_nabywcy: "Jan Kowalski Testowy",
-        ulica_nabywcy: "ul. Programistów 10, 00-000 Kraków",
-        nabywca_nip: "111-222-33-44",
-        numer_faktury: "FV-WEB/001/2026",
-        data_wystawienia: "12.03.2026"
-    };
-    pozycje: [
-        {
-            lp: 1,
-            nazwa_produktu: "Stworzenie generatora w Node.js",
-            ilosc: 1,
-            jm: "szt",
-            netto_sztuka: "2500,00",
-            netto: "2500,00"
-        },
-        {
-            lp: 2,
-            nazwa_produktu: "Konsultacje architektoniczne",
-            ilosc: 3,
-            jm: "godz",
-            netto_sztuka: "200,00",
-            netto: "600,00"
+async function createInvoice() {
+    try {
+        const sciezka = await fileManager.chooseFile();
+        if (!sciezka){
+            console.log("Nie wybrano pliku.");
+            return null;
         }
-    ]
+        const suroweDane = await fileManager.wczytajDane(sciezka);
+        if(!suroweDane || suroweDane.length == 0){
+            console.log("Plik jest pusty. Upewnik się że wybrany plik jest poprawny.");
+            return null;
+        }
+        const pierwszyWiersz = suroweDane[0];
+        const numerSzukanejFaktury = pierwszyWiersz.Nr_Faktury;
+
+        const wierszeFaktury = suroweDane.filter(wiersz => wiersz.Nr_Faktury === numerSzukanejFaktury);
+
+        const daneDoFaktury = {
+            numer_faktury: wierszeFaktury[0].Nr_Faktury,
+            nabywca_nazwa: wierszeFaktury[0].Nabywca_Nazwa,
+            nabywca_nip: wierszeFaktury[0].Nabywca_NIP,
+            pozycje: []
+        };
+    }
+}
+
+async function acreateInvoice(){
+    
+    const daneDoFaktury = "abcd ";
     
     fileManager.rozpoznajPlik('faktury.csv');
     console.log("Wczytywanie pliku...");
